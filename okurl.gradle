@@ -1,0 +1,44 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "com.github.jengelman.gradle.plugins:shadow:1.2.1"
+  }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+build.dependsOn 'shadowJar'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+    compile "com.squareup.okhttp:okhttp-urlconnection:${okHttpVersion}"
+    compile "com.squareup.okhttp:okhttp:${okHttpVersion}"
+    compile("com.squareup.retrofit:retrofit:${retrofitVersion}") {
+        exclude group: 'com.google.code.gson', module: 'gson'
+    }
+    compile "com.squareup.retrofit:converter-jackson:${retrofitVersion}"
+    compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    compile 'org.fusesource.jansi:jansi:1.11'
+    compile 'org.slf4j:slf4j-simple:1.7.5'
+    compile 'org.slf4j:jcl-over-slf4j:1.7.7'
+
+    testCompile "org.spockframework:spock-core:${spockVersion}"
+}
+
+jar {
+    manifest {
+        attributes('Manifest-Version': 1.0,
+                   'Main-Class': 'org.zirbes.sandbox.UrlSandbox')
+    }
+}
+
+mainClassName = 'org.zirbes.sandbox.UrlSandbox'
+
